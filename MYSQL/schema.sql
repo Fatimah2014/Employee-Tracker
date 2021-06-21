@@ -22,8 +22,16 @@ CREATE TABLE employee (
   id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NULL,
   last_name VARCHAR(30) NULL,
-  role_id INTEGER(10) NULL,
-  manager_id INTEGER(10) NULL,
+  role_id VARCHAR (100) NULL,
+  manager_id INTEGER(10) NOT NULL,
   PRIMARY KEY(id)
   )
+  
+SELECT * FROM department; 
+
+
+SELECT * FROM role;
+
+SELECT * FROM employee;  
+ 
   
