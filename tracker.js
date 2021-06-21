@@ -32,7 +32,8 @@ connection.connect((err) => {
           'View All Employees br Department',
           'Add Employee',
           'Remove Employee',
-          'Update Employee Role'
+          'Update Employee Role',
+          'exit'
         ],
 
     })
@@ -62,29 +63,45 @@ connection.connect((err) => {
           updateRole();
           break;
 
-        default:
+        default:// fix this
           console.log(`Invalid action: ${answer.action}`);
           break;
       }
     });
 };
-const artistSearch = () => {
-    inquirer
-      .prompt({
-        name: 'artist',
-        type: 'input',
-        message: 'What artist would you like to search for?',
-      })
-      .then((answer) => {
-        const query = 'SELECT position, song, year FROM top5000 WHERE ?';
-        connection.query(query, { artist: answer.artist }, (err, res) => {
-          res.forEach(({ position, song, year }) => {
-            console.log(
-              `Department: ${id} || name: ${department}
-            );
-          });
-          runSearch();
-        });
-      });
-  };
-  
+// function allEmployees () {
+//     const query = 'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary,  '
+    
+
+
+
+// e   
+// const addEmployee = () => {
+//   inquirer
+//     .prompt({
+//       name: 'begin',
+//       type: 'question',
+//       message: 'Who is the Employee Manager?',
+//       choices: [
+//         'Fatimah'
+//         'Angelique'
+//       ],//just a example
+
+//   })
+//   .then((answer) => {
+//     switch (answer.action) {
+//       case 'View All Employees':
+//         artistSearch();
+//         break;
+
+//       case 'View all Employees by Manager':
+//         byMangerSearch();
+//         break;
+
+
+//       default:// fix this
+//         console.log(`Invalid action: ${answer.action}`);
+//         break;
+//     }
+//   });
+// };
