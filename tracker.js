@@ -44,7 +44,7 @@ connection.connect((err) => {
           break;
 
         case 'View all Employees by Manager':
-          byMangerSearch();
+          byManagerSearch();
           break;
 
         case 'View All Employees by Department':
@@ -71,8 +71,26 @@ connection.connect((err) => {
 };
 function employeesSearch() {
   console.log("Employees form database")
-  
-}
+  connection.query("SELECT  * FROM employee", function (err, res) {
+    if (err) throw err;
+    console.log(res);
+
+  });
+  runSearch(); 
+};
+
+
+
+function byManagerSearch() {
+  console.log("Mangers from database")
+  connection.query("SELECT first_name, last_name, manager_id FROM employee WHERE manager_id = 1,2", function (err, res) {
+    if (err) throw err;
+    console.log(res);
+
+  });
+  runSearch(); 
+};
+
 // const employeesSearch = () => {
 //   const query = 'SELECT position, song, year FROM top5000 WHERE ?';
  
