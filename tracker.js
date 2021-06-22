@@ -23,8 +23,8 @@ connection.connect((err) => {
   const runSearch = () => {
     inquirer
       .prompt({
-        name: 'begin',
-        type: 'question',
+        name: 'action',
+        type: 'list',
         message: 'What would you like to do?',
         choices: [
           'View All Employees',
@@ -40,7 +40,7 @@ connection.connect((err) => {
     .then((answer) => {
       switch (answer.action) {
         case 'View All Employees':
-          artistSearch();
+          employeesSearch();
           break;
 
         case 'View all Employees by Manager':
@@ -63,12 +63,31 @@ connection.connect((err) => {
           updateRole();
           break;
 
-        default:// fix this
-          console.log(`Invalid action: ${answer.action}`);
-          break;
+        case "Exit":
+        connection.end();
+        break;
       }
     });
 };
+function employeesSearch() {
+  console.log("Employees form database")
+  
+}
+// const employeesSearch = () => {
+//   const query = 'SELECT position, song, year FROM top5000 WHERE ?';
+ 
+//     res.forEach(({ id, first_name, last_name, role_id, manager_id }) => {
+//       console.log(
+//         `id: ${id} || first_name: ${first_name} || last_name: ${last_name} || role_id ${role_id} || manager_id ${manager_id}`
+//       );
+//     });
+//   runSearch();
+//       }
+
+
+
+
+// const query = 'SELECT '
 // function allEmployees () {
 //     const query = 'SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary,  '
     
