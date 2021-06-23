@@ -3,8 +3,6 @@ node_modules
 # Compiled class file
 *.class
 
-# Log file
-*.log
 
 # BlueJ files
 *.ctxt
