@@ -15,4 +15,7 @@ VALUES ("Jim", "Jimbo", 2, NULL),
 ("Jam", "Yam", 1, 1),
 ("Andy", "G", 3, 2);
 
-INSERT INTO department (name) VALUES (?)
+INSERT INTO department (name) VALUES ('');
+
+INSERT INTO roles (name) VALUES ('');
+INSERT INTO employee (name) VALUES ('')
