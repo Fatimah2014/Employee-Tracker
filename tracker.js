@@ -92,18 +92,40 @@ connection.connect((err) => {
 };
 
 
+// const addDepartment = () => {
+//   inquirer
+//   .prompt({
+//     name: 'addDepartments',
+//     type: 'input',
+//     message: 'Add Department:',
+//   })
+//   .then((answer) => {
+//     const query = "INSERT INTO department (name) ";
+//     connection.query(query,{name: answer.name}, (err, res) => {
+//       res.foreach(({name}) => {
+//         if (err) throw err;
+//       console.log("\n");
+//       console.table(`Name: ${name}`);
+//       console.log("\n");
+//       runSearch();
+//       })
+//     })
+//   })
+// }
+
+
 function addDepartment() {
 inquirer
   .prompt({
-    name: 'addDepartments',
+    name: 'addDepartment',
     type: 'input',
     message: 'Add Department:',
   })
   .then (function (answer) {
-    connection.query("INSERT INTO department (name) VALUES ('')", answer.name, function (err, res) {
+    connection.query("INSERT INTO department (name) Values (?) ", answer.addDepartment, function (err, res) {
       if (err) throw err;
       console.log("\n");
-      console.table(res);
+      console.table(res`${answer.name}`);
       console.log("\n");
       runSearch(); 
     });
@@ -116,23 +138,34 @@ inquirer
   function addRole() {
     
     inquirer
-    .prompt({
-      name: 'addRole',
-      type: 'input',
-      message: 'Add a role:',
-    })
-    .then (function (answer) {
-      connection.query("INSERT INTO roles (title, salary, department_id) VALUES('') ", answer.addRole, function (err, res) {
+    .prompt([{
+        name: 'addRole',
+        type: 'title',
+        message: 'Add a Role:',
+    },{
+        name: 'addSalary',
+        type: 'salary',
+        message: 'Add Salary:',
+    },{ 
+        name: 'Department_id',
+        type: 'department_id',
+        message: 'Add Department_id:',
+    
+
+    }]).then (function (answer) {
+      connection.query("INSERT INTO roles (title, salary, department_id) VALUES(?) ", answer.addRole, function (err, res) {
         if (err) throw err;
         console.log("\n");
-        console.table(res);
+        console.table(res `${answer.title},${answer.salary},${answer.department_id}`);
         console.log("\n");
         runSearch(); 
       });
-    
-    }
-    
-    )};
+   
+    })
+  };
+
+
+
 
 function addEmployee() {
   console.log("Add Employee")
@@ -143,7 +176,7 @@ function addEmployee() {
     message: 'Add Employee:',
   })
   .then (function (answer) {
-    connection.query("INSERT INTO employee (first_nme, last_name, role_id, manager_id) VALUES('') ", answer.addEmployees, function (err, res) {
+    connection.query("INSERT INTO employee (first_nme, last_name, role_id, manager_id)  ", answer.addEmployee, function (err, res) {
       if (err) throw err;
       console.log("\n");
       console.table(res);
@@ -220,29 +253,68 @@ const updateEmployee = () => {
   })
   
   .then(function(userInput) {
-    let option = '';
+    let choice = '';
     switch (answer.updateEmployee) {
       case 'first_name':
-        artistSearch();
+        updateFirstN();
         break;
 
       case 'last_name':
-        byMangerSearch();
+        updateLastN();
         break;
 
       case 'role_id':
-        byMangerSearch();
+        updateRole_id();
         break;
 
       case 'department_id':
-        byMangerSearch();
+        updateDepartment_id();
         break;
-
-
 
       default:// fix this
         console.log(`Invalid action: ${answer.userInput}`);
         break;
     }
+  });
+}
+
+
+function updateFirstN() {
+  connection.query("SELECT * FROM department", (err, res) => {
+    if(err)throw err;
+    console.log("\n");
+    console.table(res);
+    console.log("\n");
+    runSearch();
+  });
+};
+
+function updateLastN() {
+  connection.query("SELECT * FROM department", (err, res) => {
+    if(err)throw err;
+    console.log("\n");
+    console.table(res);
+    console.log("\n");
+    runSearch();
+  });
+};
+
+function updateRole_id() {
+  connection.query("SELECT * FROM department", (err, res) => {
+    if(err)throw err;
+    console.log("\n");
+    console.table(res);
+    console.log("\n");
+    runSearch();
+  });
+};
+
+function updateDepartment_id() {
+  connection.query("SELECT * FROM department", (err, res) => {
+    if(err)throw err;
+    console.log("\n");
+    console.table(res);
+    console.log("\n");
+    runSearch();
   });
 };
