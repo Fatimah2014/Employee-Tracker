@@ -112,26 +112,28 @@ const addDepartment = () => {
         type: 'input',
         message: 'Add a Role:',
     },{
-        name: 'addSalary',
+        name: 'salary',
         type: 'input',
         message: 'Add Salary:',
     },{ 
-        name: 'Department_id',
+        name: 'department_id',
         type: 'input',
         message: 'Add Department_id:',
     }]).then (function (answer) {
-      connection.query("INSERT INTO roles (title, salary, department_id) VALUES ?", `${answer.title}, ${answer.salary}, ${answer.department_id}`, function (err, res) {
+      var querySql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`
       
-      });
-      
+      // '${answer.title}',${answer.salary}, ${answer.department_id}`
+     
+     console.log(querySql, 'query')
+      connection.query(querySql,[answer.title, answer.salary, answer.department_id],function (err, res) {
         if (err) throw err;
         console.log("\n");
         console.table(res);
         console.log("\n");
+
         runSearch(); 
-      
-   
-    })
+      });
+     })
   };
 
 
