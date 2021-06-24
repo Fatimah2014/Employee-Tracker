@@ -136,40 +136,6 @@ const addDepartment = () => {
      })
   };
 
-
-//   function addRole() {
-//     inquirer
-//     .prompt([{
-//         name: 'title',
-//         type: 'input',
-//         message: 'Add a Role:',
-//     },{
-//         name: 'addSalary',
-//         type: 'input',
-//         message: 'Add Salary:',
-//     },{ 
-//         name: 'Department_id',
-//         type: 'input',
-//         message: 'Add Department_id:',
-//     }]).then (function (answer) {
-//       let query = "INSERT INTO roles (title, salary, department_id) VALUES ?"
-//       connection.query(query,[answer.title, answer.salary, answer.department_id], (err, res) => {
-//         console.log(`${res.length} role is updated!`); 
-//       res.foreach(({title,salary, department_id}, i) => {
-//         const ans= i+1;
-//         console.log(
-//           `${ans} Role: ${title} Salary: ${salary} DepId: ${department_id}`
-//         );
-
-
-//       });
-
-//       runSearch();
-//     });
-//   });
-// };
-
-
   function addEmployee() {
     
     inquirer
@@ -189,37 +155,47 @@ const addDepartment = () => {
         name: 'department_id',
         type: 'input',
         message: 'Add Employee Department_id:',
+      }]).then (function (answer) {
+        var querySql = `INSERT INTO employee (first_name, last_name, role_id, department_id)  VALUES (?, ?, ?, ?)`
+       
+       
+        console.log(querySql, 'query')
+        connection.query(querySql,[answer.first_name, answer.last_name, answer.role_id, answer.department_id],function (err, res) {
 
-    }]).then (function (answer) {
-      connection.query("INSERT INTO roles (first_name, last_name, role_id, department_id) VALUES(?) ", answer.first_name, answer.last_name, answer.role_id, answer.department_id, function (err, res) {
-        if (err) throw err;
-        console.log("\n");
-        console.table(res);
-        console.log("\n");
-        runSearch(); 
-      });
+          if (err) throw err;
+          console.log("\n");
+          console.table(res);
+          console.log("\n");
+  
+          runSearch(); 
+        });
+       })
+    };
+  
+  //   }]).then (function (answer) {
+  //     connection.query("INSERT INTO roles (first_name, last_name, role_id, department_id) VALUES(?) ", answer.first_name, answer.last_name, answer.role_id, answer.department_id, function (err, res) {
+  //       if (err) throw err;
+  //       console.log("\n");
+  //       console.table(res);
+  //       console.log("\n");
+  //       runSearch(); 
+  //     });
    
-    })
-  };
-
-
-
-
-
+  //   })
+  // };
 //displays employee table 
 function employeesSearch() {
   console.log("Employees from database")
 
   let queryString = `
-  SELECT first_name, last_name, title, salary, name AS dept_name, manager_id
+  SELECT first_name, last_name, title, salary, department_id
   FROM employee
   LEFT JOIN roles
   ON role_id = roles.id
   LEFT JOIN department
   ON department_id = department.id`
 
-
-  connection.query(queryString, function (err, res) {
+ connection.query(queryString, function (err, res) {
     if (err) throw err;
     console.log("\n");
     console.table(res);
