@@ -120,7 +120,7 @@ const addDepartment = () => {
         type: 'input',
         message: 'Add Department_id:',
     }]).then (function (answer) {
-      connection.query("INSERT INTO roles (title, salary, department_id) VALUES ?", answer.title, answer.salary, answer.department_id, function (err, res) {
+      connection.query("INSERT INTO roles (title, salary, department_id) VALUES ?", `${answer.title}, ${answer.salary}, ${answer.department_id}`, function (err, res) {
       
       });
       
@@ -133,6 +133,39 @@ const addDepartment = () => {
    
     })
   };
+
+
+//   function addRole() {
+//     inquirer
+//     .prompt([{
+//         name: 'title',
+//         type: 'input',
+//         message: 'Add a Role:',
+//     },{
+//         name: 'addSalary',
+//         type: 'input',
+//         message: 'Add Salary:',
+//     },{ 
+//         name: 'Department_id',
+//         type: 'input',
+//         message: 'Add Department_id:',
+//     }]).then (function (answer) {
+//       let query = "INSERT INTO roles (title, salary, department_id) VALUES ?"
+//       connection.query(query,[answer.title, answer.salary, answer.department_id], (err, res) => {
+//         console.log(`${res.length} role is updated!`); 
+//       res.foreach(({title,salary, department_id}, i) => {
+//         const ans= i+1;
+//         console.log(
+//           `${ans} Role: ${title} Salary: ${salary} DepId: ${department_id}`
+//         );
+
+
+//       });
+
+//       runSearch();
+//     });
+//   });
+// };
 
 
   function addEmployee() {
