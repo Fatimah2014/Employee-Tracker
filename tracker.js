@@ -140,20 +140,20 @@ inquirer
     inquirer
     .prompt([{
         name: 'addRole',
-        type: 'title',
+        type: 'input',
         message: 'Add a Role:',
     },{
         name: 'addSalary',
-        type: 'salary',
+        type: 'input',
         message: 'Add Salary:',
     },{ 
         name: 'Department_id',
-        type: 'department_id',
+        type: 'input',
         message: 'Add Department_id:',
     
 
     }]).then (function (answer) {
-      connection.query("INSERT INTO roles (title, salary, department_id) VALUES(?) ", answer.addRole, function (err, res) {
+      connection.query("INSERT INTO roles (title, salary, department_id) VALUES ? ", answer.addRole, function (err, res) {
         if (err) throw err;
         console.log("\n");
         console.table(res `${answer.title},${answer.salary},${answer.department_id}`);
@@ -165,28 +165,41 @@ inquirer
   };
 
 
+  function addEmployee() {
+    
+    inquirer
+    .prompt([{
+        name: 'first_name',
+        type: 'input',
+        message: 'Add Employee First Name:',
+    },{
+        name: 'last_name',
+        type: 'input',
+        message: 'Add Employee Last Name',
+    },{ 
+        name: 'role_id',
+        type: 'input',
+        message: 'Add Employee role_id:',
+    
+        name: 'department_id',
+        type: 'input',
+        message: 'Add Employee Department_id:',
+
+    }]).then (function (answer) {
+      connection.query("INSERT INTO roles (first_name, last_name, role_id, department_id) VALUES ? ", answer.addEmployee, function (err, res) {
+        if (err) throw err;
+        console.log("\n");
+        console.table(res `${answer.first_name},${answer.last_name},${answer.role_id}${answer.department_id}`);
+        console.log("\n");
+        runSearch(); 
+      });
+   
+    })
+  };
 
 
-function addEmployee() {
-  console.log("Add Employee")
-  inquirer
-  .prompt({
-    name: 'addEmployee',
-    type: 'input',
-    message: 'Add Employee:',
-  })
-  .then (function (answer) {
-    connection.query("INSERT INTO employee (first_nme, last_name, role_id, manager_id)  ", answer.addEmployee, function (err, res) {
-      if (err) throw err;
-      console.log("\n");
-      console.table(res);
-      console.log("\n");
-      runSearch(); 
-    });
-  
-  }
-  
-  )};
+
+
 
 function employeesSearch() {
   console.log("Employees from database")
@@ -235,86 +248,100 @@ function departmentSearch() {
 
 
 
+
+
   
 const updateEmployee = () => {
   inquirer
     .prompt({
       name: 'updateEmployee',
       type: 'list',
-      message: 'Which item would you like to update?',
-      choices: [
-        'first_name',
-        'last_name',
-        'role_id',
-        'department_id'
-    
-      ],
+      Message: 'Choose the employee you would like to update:',
+      choices: employee,
+    }).then(function(answer) {
+      let value= answer.employee.split("");
+      inquirer.prompt({
+        name: "employee",
+        message: 'Which item would you like to update?',
+        choices: [
+          'first_name',
+          'last_name',
+          'role_id',
+          'department_id']
 
-  })
-  
-  .then(function(userInput) {
+      }).then(function (answer){
+        inquirer
+        .prompt({
+          name:'employee',
+          type:"input",
+          message: `Enter new${answer.employee}`
+        })
+      })
+    })
+
+  .then(function(updatedInput) {
     let choice = '';
-    switch (answer.updateEmployee) {
+    switch (answer.employee) {
       case 'first_name':
-        updateFirstN();
+        choice="first_name"
         break;
 
       case 'last_name':
-        updateLastN();
+        choice= "last_name"
         break;
 
       case 'role_id':
-        updateRole_id();
+        option = "Role_id"
         break;
 
       case 'department_id':
-        updateDepartment_id();
+        option= "department_id"
         break;
 
       default:// fix this
-        console.log(`Invalid action: ${answer.userInput}`);
+        console.log(`Invalid action: ${answer.updatedInput}`);
         break;
     }
   });
 }
 
 
-function updateFirstN() {
-  connection.query("SELECT * FROM department", (err, res) => {
-    if(err)throw err;
-    console.log("\n");
-    console.table(res);
-    console.log("\n");
-    runSearch();
-  });
-};
+// function updateFirstN() {
+//   connection.query("SELECT * FROM department", (err, res) => {
+//     if(err)throw err;
+//     console.log("\n");
+//     console.table(res);
+//     console.log("\n");
+//     runSearch();
+//   });
+// };
 
-function updateLastN() {
-  connection.query("SELECT * FROM department", (err, res) => {
-    if(err)throw err;
-    console.log("\n");
-    console.table(res);
-    console.log("\n");
-    runSearch();
-  });
-};
+// function updateLastN() {
+//   connection.query("SELECT * FROM department", (err, res) => {
+//     if(err)throw err;
+//     console.log("\n");
+//     console.table(res);
+//     console.log("\n");
+//     runSearch();
+//   });
+// };
 
-function updateRole_id() {
-  connection.query("SELECT * FROM department", (err, res) => {
-    if(err)throw err;
-    console.log("\n");
-    console.table(res);
-    console.log("\n");
-    runSearch();
-  });
-};
+// function updateRole_id() {
+//   connection.query("SELECT * FROM department", (err, res) => {
+//     if(err)throw err;
+//     console.log("\n");
+//     console.table(res);
+//     console.log("\n");
+//     runSearch();
+//   });
+// };
 
-function updateDepartment_id() {
-  connection.query("SELECT * FROM department", (err, res) => {
-    if(err)throw err;
-    console.log("\n");
-    console.table(res);
-    console.log("\n");
-    runSearch();
-  });
-};
+// function updateDepartment_id() {
+//   connection.query("SELECT * FROM department", (err, res) => {
+//     if(err)throw err;
+//     console.log("\n");
+//     console.table(res);
+//     console.log("\n");
+//     runSearch();
+//   });
+// };
