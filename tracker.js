@@ -43,7 +43,6 @@ connection.connect((err) => {
           'View All Roles',
           'View All Departments',
           'Update Employee Role',
-          'Delete Department',
           'exit'
         ],
 
@@ -70,9 +69,6 @@ connection.connect((err) => {
           break;
        case 'Update Employee Role':
           updateEmpRole();
-          break;
-        case 'Delete Department':
-          deleteDepartment();
           break;
         case "Exit":
         connection.end();
@@ -119,6 +115,7 @@ const addDepartment = () => {
         name: 'department_id',
         type: 'input',
         message: 'Add Department_id:',
+        choices(){}
     }]).then (function (answer) {
       var querySql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`
       
@@ -186,14 +183,15 @@ const addDepartment = () => {
 //displays employee table 
 function employeesSearch() {
   console.log("Employees from database")
-
-  let queryString = `
-  SELECT first_name, last_name, title, salary, department_id
-  FROM employee
-  LEFT JOIN roles
-  ON role_id = roles.id
-  LEFT JOIN department
-  ON department_id = department.id`
+  let queryString= `SELECT * FROM employee 
+`
+  // let queryString = 
+  // SELECT first_name, last_name, title, salary, name AS dept_name, department_id
+  // FROM employee
+  // LEFT JOIN roles
+  // ON role_id = roles.id
+  // LEFT JOIN department
+  // ON department_id = department.id`
 
  connection.query(queryString, function (err, res) {
     if (err) throw err;
@@ -285,57 +283,46 @@ function departmentSearch() {
 //   });
 // }
 
-// function deleteDepartment() {
-//   inquirer.prompt([{
-//     name:"departments",
-//     type: "list",
-//     message: "Choose a Department you would like to delete:",
-//     choice: [name
-//   }]).then(function (res) {
-//     var sql = "DELETE FROM department WHERE name = ?";
-//     connection.query(sql,[res.departmentSearch], function (err, res){
-//       if (err) throw err;
-//       console.log(res);
-//       runSearch();
-//     });
-//   });
-// }
-// // function updateFirstN() {
-//   connection.query("SELECT * FROM department", (err, res) => {
-//     if(err)throw err;
-//     console.log("\n");
-//     console.table(res);
-//     console.log("\n");
-//     runSearch();
-//   });
-// };
 
-// function updateLastN() {
-//   connection.query("SELECT * FROM department", (err, res) => {
-//     if(err)throw err;
-//     console.log("\n");
-//     console.table(res);
-//     console.log("\n");
-//     runSearch();
-//   });
-// };
+const updateEmpRole = () => {
+  connection.query(
+    "SELECT employee.name, employee_id, role.title From employee ",
+(err ,results) => {
+  if (err) throw err;
 
-// function updateRole_id() {
-//   connection.query("SELECT * FROM department", (err, res) => {
-//     if(err)throw err;
-//     console.log("\n");
-//     console.table(res);
-//     console.log("\n");
-//     runSearch();
-//   });
-// };
-
-// function updateDepartment_id() {
-//   connection.query("SELECT * FROM department", (err, res) => {
-//     if(err)throw err;
-//     console.log("\n");
-//     console.table(res);
-//     console.log("\n");
-//     runSearch();
-//   });
-// };
+  inquirer
+  .prompt([
+    {
+    name:"Emp",
+    type: "list",
+    choices () {
+      const choiceArray= [];
+      results.array.forEach(name => {
+        choiceArray.push(name);
+        
+      });
+      return choiceArray;
+     },
+     message: "Which employee would you like to update ",
+ },
+{
+  name:"newRole",
+  type: "list",
+  choices() {
+    const choicesArray = [];
+    results.forEach(({title}) => {
+      choicesArray.push(title);
+    });
+    return choicesArray;
+  },
+    
+    message: "Which employee role would you like to update"
+},
+])
+.then((answer) => {
+  console.log("chosen employee:", any.chosenEmp )
+  console.log("New Role:", answer.newRole)
+  connection.query(`UPDATE employee SET role_id= 1 WHERE name= ${answer.chosenEmp}`);
+init();
+})} 
+)}
