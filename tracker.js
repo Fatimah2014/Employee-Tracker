@@ -167,10 +167,6 @@ function addRole() {
 
 }
 
-
-
-
-
 function addEmployee() {
 
   var query1sql = `SELECT * FROM roles`
@@ -188,10 +184,6 @@ function addEmployee() {
       roleTitle.push(r.title)
     })
     console.log(roleTitle)
-
-
-
-
 
     var query2sql = `SELECT * FROM department`
     connection.query(query2sql, function (err, res) {
@@ -229,11 +221,30 @@ function addEmployee() {
           message: 'Add Employee Department_id:',
           choices: deptNames
         }]).then(function (answer) {
+
+          var role2Query = `SELECT * FROM roles WHERE title = '${answer.role_id}';`
+              
+          connection.query(role2Query, function (err, res) {
+            if (err) {
+              console.log(err, "role..id =====")
+            } else {
+              console.log(res[0].rId, "===============")
+              
+
+          var dept2Query = `SELECT * FROM department WHERE name = '${answer.department_id}';`
+          connection.query(dept2Query, function (err, res) {
+            if (err) {
+              console.log(err, "dept..id =====")
+            } else {
+              console.log(res[0].id, "===============")
+
+      
+
           var querySql = `INSERT INTO employee (first_name, last_name, role_id, department_id)  VALUES (?, ?, ?, ?)`
 
-
+   
           console.log(querySql, 'query')
-          connection.query(querySql, [answer.first_name, answer.last_name, answer.role_id, answer.department_id], function (err, res) {
+          connection.query(querySql, [answer.first_name, answer.last_name, res[0].rId, res[0].id], function (err, res) {
 
             if (err) throw err;
             console.log("\n");
@@ -242,33 +253,24 @@ function addEmployee() {
 
             runSearch();
           });
+          }})}})
         })
     })
   })
 };
 
-//   }]).then (function (answer) {
-//     connection.query("INSERT INTO roles (first_name, last_name, role_id, department_id) VALUES(?) ", answer.first_name, answer.last_name, answer.role_id, answer.department_id, function (err, res) {
-//       if (err) throw err;
-//       console.log("\n");
-//       console.table(res);
-//       console.log("\n");
-//       runSearch(); 
-//     });
 
-//   })
-// };
-//displays employee table 
 function employeesSearch() {
   console.log("Employees from database")
-  let queryString = `
-
- 
-  SELECT first_name, last_name, title, salary, department_id FROM employee
-  LEFT JOIN roles
-  ON role_id = roles.title
-  LEFT JOIN department
-  ON department_id = department.name`
+  let queryString = `SELECT * FROM employee 
+`
+  // let queryString = 
+  // SELECT first_name, last_name, title, salary, name AS dept_name, department_id
+  // FROM employee
+  // LEFT JOIN roles
+  // ON role_id = roles.id
+  // LEFT JOIN department
+  // ON department_id = department.id`
 
   connection.query(queryString, function (err, res) {
     if (err) throw err;
@@ -304,16 +306,15 @@ function departmentSearch() {
 };
 
 
+
 const updateEmpRole = () => {
-
-
-  connection.query(
-    "SELECT *From employee ",
-    (err, results) => {
+ connection.query(
+    "SELECT *FROM employee ",(err, res) => {
       if (err) throw err;
-      console.log(results, "employee results ====================")
-
-      const employeeArray = results.map(employee => {
+      console.log("\n");
+      console.table(res);
+      console.log("\n");
+      const employeeArray = res.map(employee => {
         return `${employee.id}, ${employee.first_name}, ${employee.last_name}`
       })
       console.log(employeeArray)
