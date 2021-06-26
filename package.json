@@ -11,6 +11,8 @@
   "dependencies": {
     "figlet": "^1.5.0",
     "inquirer": "^6.5.2",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7",
+    "validator": "^13.6.0"
   }
 }

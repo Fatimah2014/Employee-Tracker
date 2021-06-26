@@ -102,6 +102,26 @@ const addDepartment = () => {
 
 
   function addRole() {
+   
+    var querysql= `SELECT * FROM department`
+    connection.query(querysql,function(err,res){
+      if (err) throw err;
+        console.log("\n");
+        console.table(res);
+        console.log("\n"); 
+    
+    var departmentNames = []
+    var depId = []
+
+    // Note = this is the alternative method to lines 120-123
+    //  res.map( r => depId.push(r.id) ) 
+    //  res.map( r => departmentNames.push(r.name) ) 
+
+      res.map((r)=>{
+        depId.push(r.id)
+        departmentNames.push(r.name)
+      })
+      console.log(departmentNames)
     inquirer
     .prompt([{
         name: 'title',
@@ -113,9 +133,10 @@ const addDepartment = () => {
         message: 'Add Salary:',
     },{ 
         name: 'department_id',
-        type: 'input',
+        type: 'list',
         message: 'Add Department_id:',
-        choices(){}
+        choices: departmentNames
+      
     }]).then (function (answer) {
       var querySql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`
       
@@ -129,12 +150,53 @@ const addDepartment = () => {
         console.log("\n");
 
         runSearch(); 
-      });
-     })
-  };
+        });
+      })
+    })
+    }
+
+
+
+
 
   function addEmployee() {
+
+ var query1sql= `SELECT * FROM roles`
+    connection.query(query1sql,function(err,res){
+      if (err) throw err;
+        console.log("\n");
+        console.table(res);
+        console.log("\n"); 
     
+    var roleTitle= []
+    var roleId = []
+
+      res.map((r)=>{
+        roleId.push(r.id)
+        roleTitle.push(r.title)
+      })
+      console.log(roleTitle)
+
+
+
+
+
+    var query2sql= `SELECT * FROM department`
+    connection.query(query2sql,function(err,res){
+      if (err) throw err;
+        console.log("\n");
+        console.table(res);
+        console.log("\n"); 
+    
+    var deptNames = []
+    var depId = []
+
+      res.map((r)=>{
+        depId.push(r.id)
+        deptNames.push(r.name)
+      })
+      console.log(deptNames)
+
     inquirer
     .prompt([{
         name: 'first_name',
@@ -146,18 +208,20 @@ const addDepartment = () => {
         message: 'Add Employee Last Name',
     },{ 
         name: 'role_id',
-        type: 'input',
+        type: 'list',
         message: 'Add Employee role_id:',
+        choices: roleTitle
     },{
         name: 'department_id',
-        type: 'input',
+        type: 'list',
         message: 'Add Employee Department_id:',
+        choices: deptNames
       }]).then (function (answer) {
         var querySql = `INSERT INTO employee (first_name, last_name, role_id, department_id)  VALUES (?, ?, ?, ?)`
        
        
         console.log(querySql, 'query')
-        connection.query(querySql,[answer.first_name, answer.last_name, answer.role_id, answer.department_id],function (err, res) {
+        connection.query(querySql,[answer.first_name, answer.last_name, answer.role_id, answer.department_id], function (err, res) {
 
           if (err) throw err;
           console.log("\n");
@@ -167,6 +231,8 @@ const addDepartment = () => {
           runSearch(); 
         });
        })
+      })
+      })
     };
   
   //   }]).then (function (answer) {
@@ -228,65 +294,13 @@ function departmentSearch() {
 
 
 
-  
-// const updateEmpRole = () => {
-//   inquirer
-//     .prompt({
-//       name: 'updateEmployee',
-//       type: 'list',
-//       Message: 'Choose the employee you would like to update:',
-//       choices: employee,
-//     }).then(function(answer) {
-//       let value= answer.employee.split("");
-//       inquirer.prompt({
-//         name: "employee",
-//         message: 'Which item would you like to update?',
-//         choices: [
-//           'first_name',
-//           'last_name',
-//           'role_id',
-//           'department_id']
-
-//       }).then(function (answer){
-//         inquirer
-//         .prompt({
-//           name:'employee',
-//           type:"input",
-//           message: `Enter new${answer.employee}`
-//         })
-//       })
-//     })
-
-//   .then(function(updatedInput) {
-//     let choice = '';
-//     switch (answer.employee) {
-//       case 'first_name':
-//         choice="first_name"
-//         break;
-
-//       case 'last_name':
-//         choice= "last_name"
-//         break;
-
-//       case 'role_id':
-//         option = "Role_id"
-//         break;
-
-//       case 'department_id':
-//         option= "department_id"
-//         break;
-
-//       default:// fix this
-//         console.log(`Invalid action: ${answer.updatedInput}`);
-//         break;
-//     }
-//   });
-// }
 
 
 const updateEmpRole = () => {
+
+ 
   connection.query(
-    "SELECT employee.name, employee_id, role.title From employee ",
+    "SELECT *From employee ",
 (err ,results) => {
   if (err) throw err;
 
@@ -295,19 +309,21 @@ const updateEmpRole = () => {
     {
     name:"Emp",
     type: "list",
+    message: "Which employee would you like to update ",
     choices () {
-      const choiceArray= [];
-      results.array.forEach(name => {
-        choiceArray.push(name);
+      const empArray= [];
+      results.array.forEach(id => {
+        empArray.push(id);
         
       });
       return choiceArray;
      },
-     message: "Which employee would you like to update ",
+     
  },
 {
   name:"newRole",
   type: "list",
+  message: "Which employee role would you like to update",
   choices() {
     const choicesArray = [];
     results.forEach(({title}) => {
@@ -316,13 +332,16 @@ const updateEmpRole = () => {
     return choicesArray;
   },
     
-    message: "Which employee role would you like to update"
+   
 },
 ])
 .then((answer) => {
   console.log("chosen employee:", any.chosenEmp )
   console.log("New Role:", answer.newRole)
-  connection.query(`UPDATE employee SET role_id= 1 WHERE name= ${answer.chosenEmp}`);
-init();
+  connection.query(`UPDATE employee SET role_id= ? WHERE employee_id= ? ${answer.chosenEmp}`);
+runSearch();
 })} 
 )}
+
+
+
