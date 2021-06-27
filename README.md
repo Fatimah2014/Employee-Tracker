@@ -7,15 +7,16 @@
 
 
 
-# Link to Application/ Demo
-- App: https://fatimah2014.github.io/OOP-Team-Project--Generator/
+# Link to Demo
 
-- Demo: https://youtu.be/42o8uz1Wj74 
+https://youtu.be/qovF-k-Uq-k
 # Description
 
->- My goal was to create a command-line center application that takes in information about employees on a software engineering team, then generates an HTML webpage that displays summaries for each person.
->- The idea was to generate a webpage thats displays a team basic info so that that the user has quick access to their emails and Github profiles
->- The most difficult task during this project was connecting my HTML template to my index.js file
+-- Developers are often tasked with creating interfaces that make it easy 
+for non-developers to view and interact with information stored in databases.
+ Often these interfaces are known as **C**ontent **M**anagement **S**ystems. 
+ In this homework assignment, I created a organized 
+ solution for managing a company's employees using node, inquirer, and MySQL.
 
 ---------
 # Table of Content
@@ -41,10 +42,10 @@ To install necessary dependencies, run the following command
 >npm i 
 -------
 # Usage
->**Fork the repo add clone. When you receive the files you may add a unlimited amount of team members **
+>**Fork the repo add clone. Allow you to update employees, Department, and Roles **
 -------
 # Credits
->.gitignore npm jest, npm inquirer, github
+>.gitignore, validator, mysql, figlet, npm inquirer, github
 ------
 # License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
