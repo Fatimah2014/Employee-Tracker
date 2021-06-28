@@ -283,8 +283,9 @@ function employeesSearch() {
 //displays role table
 function roleSearch() {
   console.log("it works")
-  let depQuery=`SELECT roles.title, roles.salary, department.name AS dept_name
-  LEFT JOIN department 
+  let depQuery= `SELECT roles.title, roles.salary, department.name AS dept_name
+  FROM roles
+  LEFT JOIN department
   ON roles.department_id = department.id`
   // connection.query("SELECT roles.id, roles.tile, roles.salary LEFT JOIN department ON employee.department_id = department.id, ", (err, res) => {
     connection.query(depQuery, function (err, res) {
