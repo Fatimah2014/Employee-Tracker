@@ -39,13 +39,15 @@ for non-developers to view and interact with information stored in databases.
 # Installation
 To install necessary dependencies, run the following command
 
->npm i 
+------
+------
+>npm i, npm i mysql, npm i figlet, npm validator, nodemon, inquirer
 -------
 # Usage
->**Fork the repo add clone. Allow you to update employees, Department, and Roles **
+>**Fork the repo add clone. Allow you to add, view, update employees, Department, and Roles **
 -------
 # Credits
->.gitignore, validator, mysql, figlet, npm inquirer, github
+>.gitignore, github, mysql
 ------
 # License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
