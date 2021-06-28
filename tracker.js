@@ -221,15 +221,16 @@ function addEmployee() {
           message: 'Add Employee Department_id:',
           choices: deptNames
         }]).then(function (answer) {
-
+          let roleId; 
+          let deptId;
           var role2Query = `SELECT * FROM roles WHERE title = '${answer.role_id}';`
               
-          connection.query(role2Query, function (err, res) {
+          connection.query(role2Query, function (err, results) {
             if (err) {
               console.log(err, "role..id =====")
             } else {
-              console.log(res[0].rId, "===============")
-              
+              console.log(results[0].id, "===============")
+             roleId= results[0].id 
 
           var dept2Query = `SELECT * FROM department WHERE name = '${answer.department_id}';`
           connection.query(dept2Query, function (err, res) {
@@ -237,14 +238,14 @@ function addEmployee() {
               console.log(err, "dept..id =====")
             } else {
               console.log(res[0].id, "===============")
-
+              deptId= res[0].id
       
 
           var querySql = `INSERT INTO employee (first_name, last_name, role_id, department_id)  VALUES (?, ?, ?, ?)`
 
    
           console.log(querySql, 'query')
-          connection.query(querySql, [answer.first_name, answer.last_name, res[0].rId, res[0].id], function (err, res) {
+          connection.query(querySql, [answer.first_name, answer.last_name, roleId, deptId], function (err, res) {
 
             if (err) throw err;
             console.log("\n");
@@ -262,15 +263,12 @@ function addEmployee() {
 
 function employeesSearch() {
   console.log("Employees from database")
-  let queryString = `SELECT * FROM employee 
-`
-  // let queryString = 
-  // SELECT first_name, last_name, title, salary, name AS dept_name, department_id
-  // FROM employee
-  // LEFT JOIN roles
-  // ON role_id = roles.id
-  // LEFT JOIN department
-  // ON department_id = department.id`
+   let queryString = `SELECT employee.first_name, employee.last_name, roles.title, roles.salary, department.name AS dept_name
+  FROM employee
+  LEFT JOIN roles
+  ON employee.role_id = roles.id
+  LEFT JOIN department
+  ON employee.department_id = department.id`
 
   connection.query(queryString, function (err, res) {
     if (err) throw err;
@@ -285,7 +283,12 @@ function employeesSearch() {
 //displays role table
 function roleSearch() {
   console.log("it works")
-  connection.query("SELECT * FROM roles", (err, res) => {
+  let depQuery=`SELECT roles.title, roles.salary, department.name AS dept_name
+  LEFT JOIN department 
+  ON roles.department_id = department.id`
+  // connection.query("SELECT roles.id, roles.tile, roles.salary LEFT JOIN department ON employee.department_id = department.id, ", (err, res) => {
+    connection.query(depQuery, function (err, res) {
+  
     if (err) throw err;
     console.log("\n");
     console.table(res);
